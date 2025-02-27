@@ -124,5 +124,72 @@ namespace XLSconverter
         {
 
         }
+
+        private void label3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void btnSelectFolder_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            {
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedFolder = folderDialog.SelectedPath;
+                    txtFilePath.Text = selectedFolder; // Show the selected folder path
+                    ConvertAllXlsFiles(selectedFolder);
+                }
+            }
+        }
+
+        private void ConvertAllXlsFiles(string folderPath)
+        {
+            try
+            {
+                string outputFolder = Path.Combine(folderPath, "output");
+
+                // Ensure output directory exists
+                if (!Directory.Exists(outputFolder))
+                {
+                    Directory.CreateDirectory(outputFolder);
+                }
+
+                string[] xlsFiles = Directory.GetFiles(folderPath, "*.xls");
+                if (xlsFiles.Length == 0)
+                {
+                    MessageBox.Show("No .xls files found in the selected folder.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                foreach (string xlsFile in xlsFiles)
+                {
+                    string xlsxFile = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(xlsFile) + ".xlsx");
+
+                    try
+                    {
+                        ConvertXlsToXlsx(xlsFile, xlsxFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error converting {Path.GetFileName(xlsFile)}: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+                lblStatus.Text = $"Converted {xlsFiles.Length} files!";
+                MessageBox.Show("All files converted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                lblStatus.Text = "Batch conversion failed!";
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
