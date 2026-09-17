@@ -16,6 +16,6 @@ The project is designed to be used in a .NET Core environment.
 
 ## License
 
-Copyright (c) 2025 Tobias Kisling ("tk_dev", "hasderhi")
+Copyright (c) 2025-2026 Annabeth Kisling ("tk_dev", "hasderhi")
 This software is released under the MIT-License. For more
 information please see the license.
